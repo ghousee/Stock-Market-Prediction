@@ -1,16 +1,22 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import yfinance as yf
+import pandas_datareader as web
 import datetime as dt
+import seaborn as sns
 
-from sklearn.preprocessing import MinMaxScaler
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense, Dropout, LSTM
+from sklearn import metrics
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 
-sensex_data = yf.download("^BSESN", start = "2001-01-01", end = "2022-06-01")
 
-sensex_data.head()
+#Loading Data
 
-print(sensex_data)
+start = dt.datetime(2001,1,1)
+end = dt.datetime(2022,1,1)
+
+sensex_data = web.DataReader("^BSESN",'yahoo',start ,end) ##Webscraping
+
+
+
 
