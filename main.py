@@ -1,4 +1,3 @@
-from turtle import color
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -42,3 +41,24 @@ plt.yticks(size = "15")
 plt.xlabel("Time in Years", size = 15)
 plt.ylabel("Closing Price", size = 15)
 plt.show()
+
+#Simple Moving Average(sma)
+
+def movingaverage(values,window):
+    weights = np.repeat(1.0,window) / window
+    smas = np.convolve(values,weights,'valid')
+    return smas
+
+plt.figure(figsize=(20,10))
+sns.lineplot(x = "Date", y = "Close" , data = sensex_data)
+rollng_mean = sensex_data.rolling(window = 30).mean()['Close']
+sns.lineplot(x = "Date", y = rollng_mean, data = sensex_data, label = "Rolling Mean")
+rollng_std = sensex_data.rolling(window = 30).std()["Close"]
+sns.lineplot(x = "Date", y = rollng_std, data = sensex_data, label = "Rolling Standard Deviation")
+plt.title("Closing price & 30 Day Mean & Standard Deviation of SENSEX from 2001 to 2022", size = 15, color = "blue")
+plt.xticks(size = "15")
+plt.yticks(size = "15")
+plt.xlabel("Time in Years", size = 15)
+plt.ylabel("Closing Price", size = 15)
+plt.show()
+
