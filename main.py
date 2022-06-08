@@ -55,7 +55,7 @@ rollng_mean = sensex_data.rolling(window = 30).mean()['Close']
 sns.lineplot(x = "Date", y = rollng_mean, data = sensex_data, label = "Rolling Mean")
 rollng_std = sensex_data.rolling(window = 30).std()["Close"]
 sns.lineplot(x = "Date", y = rollng_std, data = sensex_data, label = "Rolling Standard Deviation")
-plt.title("Closing price & 30 Day Mean & Standard Deviation of SENSEX from 2001 to 2022", size = 15, color = "blue")
+plt.title("Closing price, 30 Simple Moving Average & Standard Deviation of SENSEX from 2001 to 2022", size = 15, color = "blue")
 plt.xticks(size = "15")
 plt.yticks(size = "15")
 plt.xlabel("Time in Years", size = 15)
