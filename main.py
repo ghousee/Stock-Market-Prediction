@@ -1,4 +1,5 @@
 from cProfile import label
+from turtle import color
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -18,10 +19,11 @@ end = dt.datetime(2022,1,1)
 
 sensex_data = web.DataReader("^BSESN",'yahoo',start ,end) ##Webscraping
 
+
 #print(sensex_data)
 #Data Cleaning
 
-
+#print(sensex_data.isnull().sum())
 
 sensex_data = sensex_data.drop_duplicates()
 
@@ -29,9 +31,9 @@ sensex_data = sensex_data.drop_duplicates()
 #print(sensex_data.isnull().sum())
 
 #Statistical analysis
-print(sensex_data.describe())
+#print(sensex_data.describe())
 
-print(sensex_data)
+#print(sensex_data)
 
 #Closing Price Graph
 plt.figure(figsize=(10,7))
@@ -42,7 +44,7 @@ plt.yticks(size = "15")
 plt.xlabel("Time in Years", size = 15)
 plt.ylabel("Closing Price", size = 15)
 
-plt.show()
+#plt.show()
 
 #Simple Moving Average(sma)
 
@@ -63,7 +65,7 @@ plt.xticks(size = "15")
 plt.yticks(size = "15")
 plt.xlabel("Time in Years", size = 15)
 plt.ylabel("Closing Price", size = 15)
-plt.show()
+#plt.show()
 
 
 #Plotting Profit/Loss in percentage
@@ -71,9 +73,9 @@ PL = sensex_data["Close"] / sensex_data["Close"].shift(1) - 1
 plt.figure(figsize=(10,7))
 PL.plot(label = 'P/L', color = 'green')
 plt.title("Profit/Loss")
-plt.show()
+#plt.show()
 
-#Modeling the data
+#Modeling the data(Supervised learning)
 
 xaxis = sensex_data[["Open","High","Low","Close"]]
 yaxis = sensex_data["Adj Close"]
@@ -83,11 +85,17 @@ yaxis = sensex_data["Adj Close"]
 
 xtrain, xtest, ytrain, ytest = train_test_split(xaxis, yaxis, test_size = 0.3, random_state = 3)
 
-#Prediction
+
+
+
+
+
+
+#Prediction using linear regression
 linreg = LinearRegression()
-linreg.fit(xtrain, ytrain)
+print("\n\n\n",linreg.fit(xtrain, ytrain))
 predic = linreg.predict(xtest)
-print(predic[:6])
+print("\n\n\n",predic[:6])
 
 #Using pandas, create a df
 DF = pd.DataFrame({"Actual: ": ytest, "Predicted: ": predic}).tail()
@@ -103,9 +111,5 @@ plt.xticks(size = 15)
 plt.yticks(size = 15)
 plt.xlabel("Adjusted Close", size = 15, color = "blue")
 plt.ylabel("Density", size = 15, color = "red")
-plt.show()
-plt.show()
-
-#Model Evaluation
-me = metrics.mean_squared_error(ytest, predic)
-print(me)
+#plt.show()
+#plt.show()
