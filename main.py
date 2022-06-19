@@ -1,39 +1,28 @@
-from cProfile import label
-from turtle import color
+#Importing libraries 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas_datareader as web
 import datetime as dt
 import seaborn as sns
-
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
-
-#Loading Data
-
+#Retrieving data(Webscraping from yahoo.com)
 start = dt.datetime(2001,1,1)
 end = dt.datetime(2022,1,1)
 
-sensex_data = web.DataReader("^BSESN",'yahoo',start ,end) ##Webscraping
-
-
+sensex_data = web.DataReader("^BSESN",'yahoo',start ,end) 
 #print(sensex_data)
+
 #Data Cleaning
-
-#print(sensex_data.isnull().sum())
-
+##Checking for null values and dropping duplicates
+print(sensex_data.isnull().sum())
 sensex_data = sensex_data.drop_duplicates()
 
-#Checking Null Values
-#print(sensex_data.isnull().sum())
-
 #Statistical analysis
-#print(sensex_data.describe())
-
-#print(sensex_data)
+print(sensex_data.describe())
 
 #Closing Price Graph
 plt.figure(figsize=(10,7))
@@ -43,15 +32,7 @@ plt.xticks(size = "15")
 plt.yticks(size = "15")
 plt.xlabel("Time in Years", size = 15)
 plt.ylabel("Closing Price", size = 15)
-
 #plt.show()
-
-#Simple Moving Average(sma)
-
-#def movingaverage(values,window):
-#    weights = np.repeat(1.0,window) / window
- #   smas = np.convolve(values,weights,'valid')
-  #  return smas
 
 #Plotting 30-day moving average(Rolling Mean) & Standard deviation
 plt.figure(figsize=(10,7))
@@ -67,7 +48,6 @@ plt.xlabel("Time in Years", size = 15)
 plt.ylabel("Closing Price", size = 15)
 #plt.show()
 
-
 #Plotting Profit/Loss in percentage
 PL = sensex_data["Close"] / sensex_data["Close"].shift(1) - 1
 plt.figure(figsize=(10,7))
@@ -76,20 +56,11 @@ plt.title("Profit/Loss")
 #plt.show()
 
 #Modeling the data(Supervised learning)
-
 xaxis = sensex_data[["Open","High","Low","Close"]]
 yaxis = sensex_data["Adj Close"]
 
-#Using LSTM(Long Short-Term Memory) after rescaling,Feature Range of (-1,1)
-##dividing dataset into Training and Test
-
+##Dividing the dataset into Training and Test data
 xtrain, xtest, ytrain, ytest = train_test_split(xaxis, yaxis, test_size = 0.3, random_state = 3)
-
-
-
-
-
-
 
 #Prediction using linear regression
 linreg = LinearRegression()
@@ -97,7 +68,7 @@ print("\n\n\n",linreg.fit(xtrain, ytrain))
 predic = linreg.predict(xtest)
 print("\n\n\n",predic[:6])
 
-#Using pandas, create a df
+#Using pandas, create a dataframe for actual and predicted values
 DF = pd.DataFrame({"Actual: ": ytest, "Predicted: ": predic}).tail()
 print(DF)
 
